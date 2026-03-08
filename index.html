@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neithan Crunch</title>
+<style>
+body{font-family:Arial;margin:0;background:#f4f4f4;}
+header{background:#000;text-align:center;padding:10px;}
+header img{width:220px;}
+.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;padding:20px;}
+.card{background:white;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,0.1);padding:15px;text-align:center;}
+.card img{width:100%;border-radius:10px;height:170px;object-fit:cover;}
+.price{font-size:22px;font-weight:bold;color:#ff3c3c;margin:10px;}
+.qty{display:flex;justify-content:center;align-items:center;gap:10px;margin:10px 0;}
+.qty button{background:#ff3c3c;color:white;border:none;font-size:18px;width:30px;height:30px;border-radius:5px;cursor:pointer;}
+.footer{position:fixed;bottom:0;width:100%;background:white;box-shadow:0 -2px 10px rgba(0,0,0,0.2);padding:15px;display:flex;justify-content:space-between;align-items:center;}
+.total{font-size:18px;font-weight:bold;}
+.btn{background:#25D366;color:white;border:none;padding:12px 18px;border-radius:10px;font-size:16px;cursor:pointer;}
+.map{background:#ff3c3c;color:white;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;margin:10px;}
+</style>
+</head>
+
+<body>
+
+<header>
+<img src="logo.png">
+</header>
+
+<div class="menu">
+
+<div class="card">
+<img src="salchipollo.png">
+<h3>Salchipollo</h3>
+<div class="price">$8</div>
+<div class="qty">
+<button onclick="changeQty('salchipollo',-1)">-</button>
+<span id="salchipollo">0</span>
+<button onclick="changeQty('salchipollo',1)">+</button>
+</div>
+</div>
+
+<div class="card">
+<img src="salchipapa.png">
+<h3>Salchipapa</h3>
+<div class="price">$5</div>
+<div class="qty">
+<button onclick="changeQty('salchipapa',-1)">-</button>
+<span id="salchipapa">0</span>
+<button onclick="changeQty('salchipapa',1)">+</button>
+</div>
+</div>
+
+<div class="card">
+<img src="broaster.png">
+<h3>Broaster</h3>
+<div class="price">$10</div>
+<div class="qty">
+<button onclick="changeQty('broaster',-1)">-</button>
+<span id="broaster">0</span>
+<button onclick="changeQty('broaster',1)">+</button>
+</div>
+</div>
+
+<div class="card">
+<img src="broaster.png">
+<h3>Broaster + Chaufa</h3>
+<div class="price">$12</div>
+<div class="qty">
+<button onclick="changeQty('broasterchaufa',-1)">-</button>
+<span id="broasterchaufa">0</span>
+<button onclick="changeQty('broasterchaufa',1)">+</button>
+</div>
+</div>
+
+<div class="card">
+<img src="salchipollo.png">
+<h3>Salchipollo + Chaufa</h3>
+<div class="price">$10</div>
+<div class="qty">
+<button onclick="changeQty('salchipollochaufa',-1)">-</button>
+<span id="salchipollochaufa">0</span>
+<button onclick="changeQty('salchipollochaufa',1)">+</button>
+</div>
+</div>
+
+<div class="card">
+<img src="refresco.png">
+<h3>Refresco</h3>
+<div class="price">$1</div>
+<div class="qty">
+<button onclick="changeQty('refresco',-1)">-</button>
+<span id="refresco">0</span>
+<button onclick="changeQty('refresco',1)">+</button>
+</div>
+</div>
+
+</div>
+
+<div style="text-align:center">
+<button class="map" onclick="window.open('https://maps.app.goo.gl/CzqB6qEjpZDKr6U79')">📍 Ver Ubicación</button>
+</div>
+
+<div class="footer">
+<div class="total">Total: $<span id="total">0</span></div>
+<button class="btn" onclick="pedir()">Pedir por WhatsApp</button>
+</div>
+
+<script>
+let precios={
+salchipollo:8,
+salchipapa:5,
+broaster:10,
+broasterchaufa:12,
+salchipollochaufa:10,
+refresco:1
+}
+
+function changeQty(item,change){
+let el=document.getElementById(item)
+let qty=parseInt(el.innerText)
+qty+=change
+if(qty<0) qty=0
+el.innerText=qty
+calcularTotal()
+}
+
+function calcularTotal(){
+let total=0
+for(let item in precios){
+let qty=parseInt(document.getElementById(item).innerText)
+total+=qty*precios[item]
+}
+document.getElementById("total").innerText=total
+}
+
+function pedir(){
+let mensaje="Hola Neithan Crunch, quisiera hacer el siguiente pedido para recoger:%0A%0A"
+let total=0
+
+for(let item in precios){
+let qty=parseInt(document.getElementById(item).innerText)
+if(qty>0){
+let subtotal=qty*precios[item]
+total+=subtotal
+mensaje+=qty+" x "+item.toUpperCase()+" ($"+subtotal+")%0A"
+}
+}
+
+mensaje+="%0ATotal a pagar: $"+total+"%0A"
+mensaje+="Por favor, confírmenme el pedido y sus datos para el pago. ¡Gracias!"
+
+window.open("https://wa.me/51907653176?text="+mensaje)
+}
+</script>
+
+</body>
+</html>
